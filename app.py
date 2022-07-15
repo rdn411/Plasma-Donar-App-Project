@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import ibm_db
 import json
-import requests
+
+
 app = Flask(__name__)
 
 conn = ibm_db.connect("DATABASE=bludb;HOSTNAME=824dfd4d-99de-440d-9991-629c01b3832d.bs2io90l08kqb1od8lcg.databases.appdomain.cloud;PORT=30119;SECURITY=SSL;SSLServerCertificate=DigiCertGlobalRootCA.crt;UID=wqm60817;PWD=kXBmmeCfbDyfBnGA",'','')
