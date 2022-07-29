@@ -72,13 +72,46 @@ def loginpage():
         
 @app.route('/stats')
 def stats():
-    '''sql = "SELECT blood FROM user group by blood"
+    sql = "SELECT count(*) FROM user WHERE infect ='infected' "
     stmt = ibm_db.prepare(conn, sql)
     ibm_db.execute(stmt)
     count = ibm_db.fetch_assoc(stmt)
-    print(count)'''
-    return render_template('stats.html',b=5,b1=2,b2=3,b3=4,b4=2,b5=1,b6=2,b7=1,b8=1)
-
+    print(count)
+    no_of_donors=count['1']
+    sql1 = "SELECT blood, count(blood),infect FROM user GROUP BY blood,infect"
+    stmt1 = ibm_db.prepare(conn, sql1)
+    ibm_db.execute(stmt1)
+    count1 = ibm_db.fetch_assoc(stmt1)
+    print(count1)
+    Opos_count=0
+    Apos_count=0
+    Bpos_count=0
+    ABpos_count=0
+    Oneg_count=0
+    Aneg_count=0
+    Bneg_count=0
+    ABneg_count=0
+    while count1 != False:
+         print(count1)
+         if count1["BLOOD"] == 'O Positive' and count1["INFECT"]== 'infected':
+            Opos_count=count1['2']
+         elif count1["BLOOD"] == "A Positive" and count1["INFECT"]== 'infected':
+            Apos_count=count1['2']
+         elif count1["BLOOD"] == "B Positive" and count1["INFECT"]== 'infected':
+            Bpos_count=count1['2']  
+         elif count1["BLOOD"] == "AB Positive" and count1["INFECT"]== 'infected':
+            ABpos_count=count1['2']
+         elif count1["BLOOD"] == "O Negative" and count1["INFECT"]== 'infected':
+            Oneg_count=count1['2']
+         elif count1["BLOOD"] == "A Negative" and count1["INFECT"]== 'infected':
+            Aneg_count=count1['2']
+         elif count1["BLOOD"] == "B Negative" and count1["INFECT"]== 'infected':
+            Bneg_count=count1['2'] 
+         elif count1["BLOOD"] == "AB Negative" and count1["INFECT"]== 'infected':
+            ABneg_count=count1['2']                 
+         count1 = ibm_db.fetch_assoc(stmt1)
+    
+    return render_template('stats.html',b=no_of_donors,b1=Opos_count,b2=Apos_count,b3=Bpos_count,b4=ABpos_count,b5=Oneg_count,b6=Aneg_count,b7=Bneg_count,b8=ABneg_count)
 @app.route('/requester')
 def requester():
     return render_template('request.html')
